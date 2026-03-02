@@ -1,0 +1,225 @@
+# JETTO System & User Flow Diagrams
+
+This file contains Mermaid diagrams for JETTO pitch materials: system architecture map, user journey loop, and data flywheel.
+
+---
+
+## DIAGRAM 1: System Architecture Map
+
+```mermaid
+graph TB
+    subgraph Users["👥 User Roles"]
+        A1["🏗️ Architect/Engineer<br/>(Upload, Revise)"]
+        A2["👷 PM/Head of Works<br/>(Enforce, Oversee)"]
+        A3["🔨 Builder/Subcontractor<br/>(Execute, Comment)"]
+        A4["👤 Owner<br/>(View, Client Comments)"]
+    end
+    
+    subgraph Core["🎯 JETTO Core System"]
+        B1["📁 Drawing Vault<br/>(PDF, DWG, Images)"]
+        B2["🔄 Version Control<br/>(Archive, Latest Priority)"]
+        B3["💬 Comment Engine<br/>(Anchored to Drawing + Version)"]
+        B4["🔐 Role Permissions<br/>(Upload/Enforce/Execute/View)"]
+        B5["🔔 Notification System<br/>(In-App, Email, WhatsApp Ping)"]
+    end
+    
+    subgraph Data["📊 Data & Intelligence Layer"]
+        C1["📝 Audit Trail<br/>(All Actions Logged)"]
+        C2["🗄️ Archive System<br/>(Old Versions Hidden, Retrievable)"]
+        C3["🤖 Future: Passive Intelligence<br/>(Rework Predictors, Benchmarks)"]
+    end
+    
+    subgraph External["🔗 External Integrations"]
+        D1["💬 WhatsApp<br/>(Invite Links, Notifications)"]
+        D2["📧 Email<br/>(Notifications, Invites)"]
+        D3["☁️ Cloud Storage<br/>(Supabase/Firebase)"]
+    end
+    
+    A1 -->|Upload Drawing| B1
+    A1 -->|Revise Version| B2
+    A3 -->|Comment on Drawing| B3
+    A2 -->|Mark Ready| B4
+    A3 -->|Mark Executed| B4
+    A4 -->|View Only| B1
+    
+    B1 --> B2
+    B2 --> B3
+    B3 --> B5
+    B4 --> B5
+    
+    B1 --> C1
+    B2 --> C2
+    B3 --> C1
+    C1 --> C3
+    C2 --> C3
+    
+    B5 -->|Send Ping| D1
+    B5 -->|Send Email| D2
+    B1 --> D3
+    D1 -->|Invite Collaborators| Users
+    D2 -->|Invite Collaborators| Users
+    
+    style B1 fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
+    style B2 fill:#2196F3,stroke:#1565C0,stroke-width:2px,color:#fff
+    style B3 fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    style C3 fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
+```
+
+---
+
+## DIAGRAM 2: User Journey Loop (Builder Comment Cycle)
+
+```mermaid
+flowchart TD
+    Start["🎬 START: Architect Creates Project"] --> Upload["📤 UPLOAD<br/>Architect uploads drawing<br/>Status: Draft<br/>All team notified"]
+    
+    Upload --> Assign["📋 ASSIGN<br/>PM assigns drawing to Builder<br/>Notification sent"]
+    
+    Assign --> Review["👀 REVIEW<br/>Builder views drawing on-site<br/>Identifies issue"]
+    
+    Review --> Comment{"💬 COMMENT<br/>Builder marks PDF:<br/>'Rebar spacing unclear here'"}
+    
+    Comment --> NotifyArch["🔔 Architect notified<br/>Comment appears in dashboard"]
+    
+    NotifyArch --> Revise["✏️ REVISE<br/>Architect uploads new version<br/>Old version auto-archived"]
+    
+    Revise --> Ready{"✅ READY?<br/>PM reviews revised drawing"}
+    
+    Ready -->|"Issues Found"| Comment
+    Ready -->|"Approved"| MarkReady["🟢 MARK READY<br/>PM sets status: Ready for Execution<br/>Notification sent to Builder"]
+    
+    MarkReady --> Execute["🔨 EXECUTE<br/>Builder on-site marks drawing Executed<br/>Timestamp logged"]
+    
+    Execute --> Archive["🗄️ ARCHIVE<br/>Drawing locked<br/>Comments preserved<br/>Full audit trail stored"]
+    
+    Archive --> End["🏁 END: Drawing Complete<br/>Loop repeats for next drawing"]
+    
+    End -.->|"Next Drawing"| Upload
+    
+    style Start fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
+    style Execute fill:#FF5722,stroke:#BF360C,stroke-width:3px,color:#fff
+    style Archive fill:#607D8B,stroke:#37474F,stroke-width:2px,color:#fff
+    style End fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
+    style Comment fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    style MarkReady fill:#2196F3,stroke:#1565C0,stroke-width:2px,color:#fff
+```
+
+---
+
+## DIAGRAM 3: Data Flywheel (Growth & Intelligence Loop)
+
+```mermaid
+graph LR
+    subgraph Adoption["📈 Adoption Flywheel"]
+        A["🎯 Architect Uses JETTO<br/>(Free Tier, 1 Project)"]
+        B["📲 Invites Team via WhatsApp<br/>(Builders, PM, Subcontractors)"]
+        C["🔨 Builders Use Daily<br/>(Comment, Execute, Track)"]
+        D["✨ Habit Forms<br/>(JETTO = Source of Truth)"]
+    end
+    
+    subgraph Growth["🚀 Viral Growth"]
+        E["🔄 Team Reuses on Next Project<br/>(Hits 2-Project Limit)"]
+        F["💳 Upgrade to Premium<br/>(Architect/PM Pays €10-20/mo)"]
+        G["📢 Architect Refers Other Architects<br/>(Case Studies, Local PR)"]
+    end
+    
+    subgraph Data["💎 Data Value"]
+        H["📊 Dataset Accumulates<br/>(Drawing Timelines, Revision Patterns)"]
+        I["🤖 AI Insights Unlock<br/>(Rework Predictors, Benchmarks)"]
+        J["💰 Premium Value Increases<br/>(Intelligence Dashboard)"]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G -.->|"New Architects"| A
+    
+    C --> H
+    D --> H
+    H --> I
+    I --> J
+    J --> F
+    
+    style A fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
+    style D fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
+    style F fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style I fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
+    style G fill:#F44336,stroke:#C62828,stroke-width:2px,color:#fff
+```
+
+---
+
+## DIAGRAM 4: JETTO vs. Competitors (Positioning Map)
+
+```mermaid
+quadrantChart
+    title JETTO Competitive Positioning
+    x-axis "Low Complexity" --> "High Complexity"
+    y-axis "Low Cost" --> "High Cost"
+    quadrant-1 "Sweet Spot (JETTO)"
+    quadrant-2 "Enterprise Overkill"
+    quadrant-3 "Insufficient Tools"
+    quadrant-4 "Niche/Expensive"
+    "WhatsApp": [0.15, 0.05]
+    "Email/Drive": [0.25, 0.10]
+    "WeTransfer": [0.20, 0.15]
+    "JETTO Free": [0.35, 0.05]
+    "JETTO Premium": [0.40, 0.25]
+    "Procore": [0.85, 0.90]
+    "Autodesk Build": [0.80, 0.85]
+    "BIM360": [0.90, 0.95]
+    "SAP": [0.95, 1.00]
+    "Buildertrend": [0.70, 0.60]
+```
+
+---
+
+## DIAGRAM 5: Revenue Model Flow
+
+```mermaid
+flowchart LR
+    subgraph Free["🆓 FREE TIER (90% Users)"]
+        F1["1 Active Project"]
+        F2["Unlimited Collaborators"]
+        F3["Full Functionality"]
+        F4["5GB Storage"]
+    end
+    
+    subgraph Triggers["🔓 Premium Triggers"]
+        T1["Need 2nd Project"]
+        T2["Need Advanced Markup"]
+        T3["Need More Storage"]
+        T4["Want Industry Insights"]
+    end
+    
+    subgraph Premium["💎 PREMIUM TIER (10-15% Conversion)"]
+        P1["Unlimited Projects"]
+        P2["Advanced PDF Tools"]
+        P3["50GB Storage"]
+        P4["Intelligence Dashboard"]
+        P5["€10-20/month per Admin"]
+    end
+    
+    subgraph Future["🚀 FUTURE OPTIONALITY"]
+        R1["Dataset Insights<br/>(Sell to Insurers, Suppliers)"]
+        R2["Acquisition<br/>(Autodesk, Oracle, SAP)"]
+    end
+    
+    F1 & F2 & F3 & F4 --> Triggers
+    T1 & T2 & T3 & T4 --> Premium
+    P1 & P2 & P3 & P4 --> P5
+    P5 --> Future
+    
+    style Free fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
+    style Triggers fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    style Premium fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style Future fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
+```
+
+---
+
+**End of Diagrams**  
+*Use these diagrams in pitch presentations, documentation, and investor materials.*

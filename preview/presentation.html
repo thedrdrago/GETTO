@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJETTO JETTO - Pitch Deck</title>
+    <link rel="stylesheet" href="presentation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="slides-container">
+
+        <!-- SLIDE 1: Title -->
+        <section class="slide active" id="slide-1">
+            <div class="content-grid">
+                <div class="accent-bar-vertical"></div>
+                <div class="main-content">
+                    <h1 class="huge-title">PROJETTO<br><span class="highlight">JETTO</span></h1>
+                    <p class="subtitle">The drawing that gets built is always the right one.</p>
+                    <div class="divider"></div>
+                    <p class="description">Drawing execution control for real construction sites.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: The Problem -->
+        <section class="slide" id="slide-2">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">02</span>
+                    <h2>The Problem</h2>
+                </div>
+                <div class="main-content">
+                    <ul class="heavy-list">
+                        <li>Construction projects run on <span class="highlight">WhatsApp</span>.</li>
+                        <li>Drawings are scattered, version-blind, and informal.</li>
+                        <li>Old drawings get executed.</li>
+                        <li>Mistakes, delays, rework, cost overruns.</li>
+                    </ul>
+                </div>
+                <div class="visual-block">
+                    <div class="chaos-graphic">
+                        <span>WA</span>
+                        <span>EMAIL</span>
+                        <span>PDF</span>
+                        <span>???</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: Real Pain -->
+        <section class="slide" id="slide-3">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">03</span>
+                    <h2>Real Pain</h2>
+                </div>
+                <div class="main-content split-layout">
+                    <div class="pain-point">
+                        <h3>2 Years Old</h3>
+                        <p>Builders execute expired drawings thinking they are current.</p>
+                    </div>
+                    <div class="pain-point">
+                        <h3>Repeated Sends</h3>
+                        <p>Architects resend the same files repeatedly to different people.</p>
+                    </div>
+                    <div class="pain-point">
+                        <h3>Lost Comments</h3>
+                        <p>Feedback is unclear, detached from the file, and lost in chat.</p>
+                    </div>
+                    <div class="pain-point highlight-bg">
+                        <h3>No Source of Truth</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: Why Existing Tools Fail -->
+        <section class="slide" id="slide-4">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">04</span>
+                    <h2>Why Tools Fail</h2>
+                </div>
+                <div class="main-content">
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <h3>WhatsApp</h3>
+                            <p>Chronological chaos. Files expire.</p>
+                        </div>
+                        <div class="comparison-item">
+                            <h3>Email</h3>
+                            <p>Fragmentation. Who has the latest?</p>
+                        </div>
+                        <div class="comparison-item">
+                            <h3>ERPs / BIM</h3>
+                            <p>Heavy, expensive, unrealistic for small teams.</p>
+                        </div>
+                    </div>
+                    <div class="bottom-statement">
+                        <p>They assume discipline that <span class="highlight">does not exist</span> on site.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: The Insight -->
+        <section class="slide" id="slide-5">
+            <div class="content-grid">
+                <div class="left-bar-orange"></div>
+                <div class="main-content center-focus">
+                    <h2>The Insight</h2>
+                    <p class="big-statement">The real failure point is between <br><strong>drawing</strong> and
+                        <strong>execution</strong>.
+                    </p>
+                    <div class="divider"></div>
+                    <p class="sub-statement">Drawings are treated as attachments. <br>They should be the <span
+                            class="highlight">operational core</span>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: The Product -->
+        <section class="slide" id="slide-6">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">06</span>
+                    <h2>The Product</h2>
+                </div>
+                <div class="main-content">
+                    <h3 class="product-title large-text">JETTO is a drawing execution vault.</h3>
+                    <ul class="feature-list large-list">
+                        <li>One place where the latest drawing lives.</li>
+                        <li>Comments live <strong>on</strong> the drawing.</li>
+                        <li>Execution is tracked <strong>per</strong> drawing.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 7: How It Works -->
+        <section class="slide" id="slide-7">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">07</span>
+                    <h2>The Loop</h2>
+                </div>
+                <div class="main-content loop-layout">
+                    <div class="step">1. Upload</div>
+                    <div class="arrow">→</div>
+                    <div class="step">2. Comment</div>
+                    <div class="arrow">→</div>
+                    <div class="step">3. Revise</div>
+                    <div class="arrow">→</div>
+                    <div class="step highlight-step">4. Ready</div>
+                    <div class="arrow">→</div>
+                    <div class="step">5. Execute</div>
+                    <div class="arrow">→</div>
+                    <div class="step muted">6. Archive</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: What JETTO Is NOT -->
+        <section class="slide" id="slide-8">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">08</span>
+                    <h2>Not A...</h2>
+                </div>
+                <div class="main-content not-list">
+                    <div class="not-item">ERP</div>
+                    <div class="not-item">PM Tool</div>
+                    <div class="not-item">BIM Collab</div>
+                    <div class="not-item">Chat Replacement</div>
+                </div>
+                <div class="bottom-statement">
+                    <p>It <span class="highlight">overlays</span> existing workflows.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: Who It’s For -->
+        <section class="slide" id="slide-9">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">09</span>
+                    <h2>The Users</h2>
+                </div>
+                <div class="main-content user-grid">
+                    <div class="user-card">
+                        <h3>Architects</h3>
+                        <p>Upload & Revise</p>
+                    </div>
+                    <div class="user-card highlight-border">
+                        <h3>PMs</h3>
+                        <p>Control Execution</p>
+                    </div>
+                    <div class="user-card">
+                        <h3>Builders</h3>
+                        <p>Execute Clearly</p>
+                    </div>
+                    <div class="user-card muted">
+                        <h3>Owners</h3>
+                        <p>Read-only</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 10: Adoption Strategy -->
+        <section class="slide" id="slide-10">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">10</span>
+                    <h2>Adoption</h2>
+                </div>
+                <div class="main-content">
+                    <ul class="heavy-list">
+                        <li>Free for one project.</li>
+                        <li>No training required.</li>
+                        <li>No workflow change.</li>
+                        <li>WhatsApp invitations.</li>
+                        <li><span class="highlight">Sicily-first.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 11: Business Model -->
+        <section class="slide" id="slide-11">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">11</span>
+                    <h2>Business Model</h2>
+                </div>
+                <div class="main-content pricing-layout">
+                    <div class="price-box">
+                        <div class="price-row">
+                            <span class="currency">€</span>
+                            <span class="amount">10–20</span>
+                        </div>
+                        <span class="period">/ month</span>
+                        <p>per professional account</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Unlimited projects</li>
+                        <li>Pro markup tools</li>
+                        <li>Storage & Exports</li>
+                        <li>Free → Premium funnel</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 12: Why We Win -->
+        <section class="slide" id="slide-12">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">12</span>
+                    <h2>Why We Win</h2>
+                </div>
+                <div class="main-content">
+                    <div class="win-grid">
+                        <div class="win-item">Zero-friction adoption</div>
+                        <div class="win-item highlight-text">Drawing-first obsession</div>
+                        <div class="win-item">Italian language & culture</div>
+                        <div class="win-item">Bottom-up usage</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 13: Roadmap -->
+        <section class="slide" id="slide-13">
+            <div class="content-grid">
+                <div class="header-block">
+                    <span class="slide-number">13</span>
+                    <h2>Roadmap</h2>
+                </div>
+                <div class="main-content roadmap">
+                    <div class="phase active">
+                        <span class="phase-num">01</span>
+                        <h3>Core Vault</h3>
+                        <p>Execution loop</p>
+                    </div>
+                    <div class="phase">
+                        <span class="phase-num">02</span>
+                        <h3>Pro Tools</h3>
+                        <p>Exports & Markup</p>
+                    </div>
+                    <div class="phase">
+                        <span class="phase-num">03</span>
+                        <h3>Intelligence</h3>
+                        <p>Passive data insights</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 14: Closing -->
+        <section class="slide" id="slide-14">
+            <div class="content-grid">
+                <div class="accent-bar-vertical"></div>
+                <div class="main-content center-focus">
+                    <h2 class="closing-statement">JETTO doesn’t change how <br>construction works.</h2>
+                    <h2 class="closing-statement highlight">It stops it from breaking.</h2>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- On-screen Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" title="Previous Slide">←</button>
+        <button class="nav-btn" id="nextBtn" title="Next Slide">→</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                // Ensure index is within bounds
+                if (index < 0) index = 0;
+                if (index >= slides.length) index = slides.length - 1;
+
+                currentSlide = index;
+
+                slides.forEach((slide, i) => {
+                    if (i === currentSlide) {
+                        slide.classList.add('active');
+                        // Force visibility for troubleshooting
+                        slide.style.visibility = 'visible';
+                        slide.style.opacity = '1';
+                    } else {
+                        slide.classList.remove('active');
+                        // Force hide
+                        slide.style.visibility = 'hidden';
+                        slide.style.opacity = '0';
+                    }
+                });
+
+                // Optional: Update button states if needed (e.g. disable prev at 0)
+                prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
+                nextBtn.style.opacity = currentSlide === slides.length - 1 ? '0.5' : '1';
+            }
+
+            // Keyboard Nav
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                    if (currentSlide < slides.length - 1) showSlide(currentSlide + 1);
+                } else if (e.key === 'ArrowLeft') {
+                    if (currentSlide > 0) showSlide(currentSlide - 1);
+                }
+            });
+
+            // Button Nav
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent body click conflict
+                if (currentSlide < slides.length - 1) showSlide(currentSlide + 1);
+            });
+
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (currentSlide > 0) showSlide(currentSlide - 1);
+            });
+
+            // Body Click Nav (Right half = next, Left half = prev)
+            document.body.addEventListener('click', (e) => {
+                // Don't trigger if clicking buttons
+                if (e.target.closest('.nav-btn')) return;
+
+                if (e.clientX > window.innerWidth / 2) {
+                    if (currentSlide < slides.length - 1) showSlide(currentSlide + 1);
+                } else {
+                    if (currentSlide > 0) showSlide(currentSlide - 1);
+                }
+            });
+
+            // Initialize
+            showSlide(0);
+        });
+    </script>
+</body>
+
+</html>

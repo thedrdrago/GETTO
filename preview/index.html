@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJETTO JETTO - Il cassetto dei disegni per l'edilizia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Dark Navy + Orange Theme based on Hamer slide */
+            --bg-dark: #0f111a;
+            /* Deepest Navy/Black */
+            --bg-card: #1c1e2d;
+            /* Slightly lighter navy for cards */
+            --bg-hover: #25283d;
+            /* Hover state */
+
+            --primary: #ff4518;
+            /* Bright Red-Orange Accent */
+            --primary-dark: #d6300a;
+            /* Darker Orange */
+
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+
+            --border: #2d3045;
+
+            --success: #10b981;
+            /* Keep functional colors distinctive but compatible */
+            --warning: #f59e0b;
+
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background: var(--bg-dark);
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 17, 26, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav h1::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 24px;
+            background: var(--primary);
+        }
+
+        nav .tagline {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        nav .nav-links a:hover {
+            color: white;
+            background: var(--bg-hover);
+        }
+
+        nav .nav-links a.active {
+            color: white;
+            background: var(--bg-card);
+            border-color: var(--primary);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Views */
+        .view {
+            display: none;
+            min-height: calc(100vh - 80px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Landing Page */
+        .hero {
+            padding: 8rem 0;
+            text-align: center;
+            background: radial-gradient(circle at top right, #2d1b1b 0%, var(--bg-dark) 40%);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 0;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s;
+            border: 2px solid var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 69, 24, 0.3);
+        }
+
+        /* Problem Section */
+        .problem-section {
+            padding: 5rem 0;
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border);
+        }
+
+        .problem-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: white;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-left: 4px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .problem-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .problem-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .problem-card p {
+            color: var(--text-muted);
+        }
+
+        /* Solution Section */
+        .solution-section {
+            padding: 5rem 0;
+            background: var(--bg-card);
+        }
+
+        .solution-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .feature-list {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            gap: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            align-items: flex-start;
+        }
+
+        .feature-item:hover {
+            border-color: var(--primary);
+        }
+
+        .feature-item .number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            background: rgba(255, 69, 24, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 50%;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            padding: 2rem 0;
+            background: var(--bg-dark);
+        }
+
+        .dashboard-header {
+            background: var(--bg-card);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .dashboard-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            border-radius: 50%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .label {
+            color: var(--primary);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+        }
+
+        .stat-card .value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Project Cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+
+        .project-card .project-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .project-card .location {
+            color: var(--primary);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .project-card .project-stats {
+            padding: 1.5rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .project-card .project-stat {
+            text-align: center;
+        }
+
+        .project-card .project-stat .number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .project-card .project-stat .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* Drawing Vault */
+        .vault-header {
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+        }
+
+        .vault-header .breadcrumb {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .vault-header .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .drawing-list {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .drawing-item {
+            display: grid;
+            grid-template-columns: 60px 2fr 1fr 150px 120px 80px;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .drawing-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .drawing-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.75rem;
+        }
+
+        .drawing-title {
+            font-weight: 600;
+            color: white;
+        }
+
+        .drawing-area {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid;
+        }
+
+        .status-badge.draft {
+            border-color: var(--warning);
+            color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .status-badge.ready {
+            border-color: var(--success);
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .status-badge.executed {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .version-badge {
+            background: var(--bg-dark);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        /* Drawing Detail */
+        .detail-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .drawing-viewer {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .viewer-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tool-btn {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: white;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tool-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .pdf-canvas {
+            background: #000000;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .pdf-placeholder {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1/1.414;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Comment annotation */
+        .comment-pin {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border: 2px solid white;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            z-index: 10;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-panel,
+        .comments-panel,
+        .action-buttons {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row .label {
+            color: var(--text-muted);
+        }
+
+        .info-row .value {
+            color: white;
+            font-weight: 600;
+        }
+
+        .comments-header {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment-count {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .comment {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comment-text {
+            color: #ddd;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            padding-left: 2.5rem;
+            border-left: 2px solid var(--border);
+        }
+
+        .comment-action {
+            color: var(--primary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-right: 1rem;
+            text-decoration: none;
+        }
+
+        .add-comment textarea {
+            width: 100%;
+            margin-top: 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 1rem;
+            font-family: inherit;
+        }
+
+        .add-comment textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .add-comment button {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-hover);
+            color: white;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-comment button:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            border-color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .detail-container {
+                grid-template-columns: 1fr;
+            }
+
+            .drawing-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .drawing-item>* {
+                justify-self: start;
+            }
+
+            nav .nav-links {
+                display: none;
+            }
+
+            /* Simplified mobile nav */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div>
+                <h1>PROJETTO JETTO</h1>
+                <div class="tagline">Il disegno giusto, ogni volta</div>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-view="landing">Home</a>
+                <a href="#" class="nav-link" data-view="dashboard">Dashboard</a>
+                <a href="#" class="nav-link" data-view="vault">Vault</a>
+                <a href="#" class="nav-link" data-view="detail">Dettaglio</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing View -->
+    <div id="landing" class="view active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Il Cassetto dei Disegni<br><span>per l'Edilizia Siciliana</span></h1>
+                <p class="subtitle">Basta versioni sbagliate nei gruppi WhatsApp. Un'unica fonte di verità per ogni
+                    cantiere.</p>
+                <a href="#" class="cta-button" onclick="switchView('dashboard')">Vedi Demo →</a>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section class="problem-section">
+            <div class="container">
+                <h2>Il Problema: €10M Persi nel Caos</h2>
+                <div class="problem-grid">
+                    <div class="problem-card">
+                        <div class="icon">📱</div>
+                        <h3>Caos WhatsApp</h3>
+                        <p>10+ gruppi per progetto. Disegni sepolti in foto, PDF, vecchi messaggi.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="icon">🔄</div>
+                        <h3>Zero Versioning</h3>
+                        <p>Il muratore esegue il disegno di 2 anni fa. Nessuno sa qual è l'ultima versione.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="icon">💬</div>
+                        <h3>Feedback Perso</h3>
+                        <p>Commenti dispersi tra vocali, telefonate e pizzini. Nessuna traccia scritta.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="icon">💰</div>
+                        <h3>Costi Occulti</h3>
+                        <p>Rifacimenti e ritardi costano migliaia di euro. E paghi tu.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="solution-section">
+            <div class="container">
+                <h2>Il Ciclo JETTO</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="number">1</div>
+                        <div>
+                            <h3>Upload & Notifica</h3>
+                            <p>Carica il PDF. Tutto il team riceve la notifica istantanea.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="number">2</div>
+                        <div>
+                            <h3>Commento su PDF</h3>
+                            <p>Il muratore punta il dito sul disegno e lascia un commento vocale o scritto.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="number">3</div>
+                        <div>
+                            <h3>Revisione Rapida</h3>
+                            <p>Carichi la V2. La V1 viene archiviata automaticamente. Nessuna confusione.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="number">4</div>
+                        <div>
+                            <h3>Esecuzione & Firma</h3>
+                            <p>Il capo cantiere segna "Eseguito". Timestamp salvato per sempre.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboard" class="view dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Dashboard</h2>
+                <div class="user-info">
+                    <div style="text-align: right;">
+                        <div style="font-weight: 700; color: white;">Giuseppe Russo</div>
+                        <div style="font-size: 0.75rem; color: var(--primary);">ARCHITETTO</div>
+                    </div>
+                    <div class="avatar">GR</div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">Progetti Attivi</div>
+                    <div class="value">4</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Disegni Totali</div>
+                    <div class="value">87</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Commenti Aperti</div>
+                    <div class="value" style="color: var(--primary);">23</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Completamento</div>
+                    <div class="value">68%</div>
+                </div>
+            </div>
+
+            <h3 style="margin: 2rem 0 1rem; color: white;">PROGETTI RECENTI</h3>
+
+            <div class="project-grid">
+                <div class="project-card" onclick="switchView('vault')">
+                    <div class="project-header">
+                        <h3>Villa Residenziale Mondello</h3>
+                        <div class="location">📍 Mondello, Palermo</div>
+                    </div>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="number">34</div>
+                            <div class="label">Disegni</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="number">28</div>
+                            <div class="label">Eseguiti</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="number" style="color: var(--primary);">4</div>
+                            <div class="label">Alert</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Ristrutturazione Centro</h3>
+                        <div class="location">📍 Cefalù, Palermo</div>
+                    </div>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="number">22</div>
+                            <div class="label">Disegni</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="number">22</div>
+                            <div class="label">Eseguiti</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="number">0</div>
+                            <div class="label">Alert</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Complesso Alcara</h3>
+                        <div class="location">📍 Alcara Li Fusi</div>
+                    </div>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="number">18</div>
+                            <div class="label">Disegni</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="number">5</div>
+                            <div class="label">Eseguiti</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="number" style="color: var(--primary);">12</div>
+                            <div class="label">Alert</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vault View -->
+    <div id="vault" class="view dashboard">
+        <div class="container">
+            <div class="vault-header">
+                <div>
+                    <div class="breadcrumb">
+                        <a href="#" onclick="switchView('dashboard')">Dashboard</a> / Villa Mondello
+                    </div>
+                </div>
+                <a href="#" class="cta-button" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">+ Upload</a>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active">Tutti (34)</button>
+                <button class="filter-btn">Pronti (6)</button>
+                <button class="filter-btn">In Esecuzione (5)</button>
+                <button class="filter-btn">Eseguiti (28)</button>
+            </div>
+
+            <div class="drawing-list">
+                <div class="drawing-item" onclick="switchView('detail')">
+                    <div class="drawing-icon">PDF</div>
+                    <div>
+                        <div class="drawing-title">Piano Terra - Layout Generale</div>
+                        <div class="drawing-area">STRUTTURALE</div>
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">3 giorni fa</div>
+                    <div><span class="status-badge ready">Pronto</span></div>
+                    <div style="font-size: 0.9rem;">M. Bianchi</div>
+                    <div><span class="version-badge">v3</span></div>
+                </div>
+
+                <div class="drawing-item">
+                    <div class="drawing-icon">PDF</div>
+                    <div>
+                        <div class="drawing-title">Bagno Principale - Sezione A-A</div>
+                        <div class="drawing-area">DETTAGLIO</div>
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">5 giorni fa</div>
+                    <div><span class="status-badge ready">Pronto</span></div>
+                    <div style="font-size: 0.9rem;">L. Marino</div>
+                    <div><span class="version-badge">v2</span></div>
+                </div>
+
+                <div class="drawing-item">
+                    <div class="drawing-icon">DWG</div>
+                    <div>
+                        <div class="drawing-title">Facciata Nord - Prospetto</div>
+                        <div class="drawing-area">ARCHITETTONICO</div>
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">1 sett fa</div>
+                    <div><span class="status-badge executed">Eseguito</span></div>
+                    <div style="font-size: 0.9rem;">G. Costa</div>
+                    <div><span class="version-badge">v1</span></div>
+                </div>
+
+                <div class="drawing-item">
+                    <div class="drawing-icon">PDF</div>
+                    <div>
+                        <div class="drawing-title">Cucina - Impianti Elettrici</div>
+                        <div class="drawing-area">IMPIANTI</div>
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">Oggi</div>
+                    <div><span class="status-badge draft">Bozza</span></div>
+                    <div style="font-size: 0.9rem;">--</div>
+                    <div><span class="version-badge">v1</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drawing Detail View -->
+    <div id="detail" class="view">
+        <div class="container">
+            <div class="vault-header" style="margin-top: 2rem;">
+                <div class="breadcrumb">
+                    <a href="#" onclick="switchView('dashboard')">Dashboard</a> /
+                    <a href="#" onclick="switchView('vault')">Villa Mondello</a> /
+                    Piano Terra - Layout
+                </div>
+            </div>
+
+            <div class="detail-container">
+                <!-- Left: Drawing Viewer -->
+                <div class="drawing-viewer">
+                    <div class="viewer-header">
+                        <h3>Layout Generale (v3)</h3>
+                        <div class="viewer-tools">
+                            <button class="tool-btn">🔍+</button>
+                            <button class="tool-btn">🔍-</button>
+                            <button class="tool-btn"
+                                style="color: var(--primary); border-color: var(--primary);">💬</button>
+                            <button class="tool-btn">⬇️</button>
+                        </div>
+                    </div>
+                    <div class="pdf-canvas">
+                        <div class="pdf-placeholder">
+                            <div style="font-size: 4rem; margin-bottom: 1rem; color: #ccc;">📄</div>
+                            <h2 style="color: #333;">Piano Terra.pdf</h2>
+                            <p>Versione 3 | Esecutivo</p>
+                        </div>
+                        <div class="comment-pin" style="top: 35%; left: 45%;" title="Vedi commento">1</div>
+                        <div class="comment-pin" style="top: 60%; left: 70%;" title="Vedi commento">2</div>
+                    </div>
+                </div>
+
+                <!-- Right: Sidebar -->
+                <div class="sidebar">
+                    <div class="info-panel">
+                        <h4
+                            style="color: var(--primary); margin-bottom: 1rem; text-transform: uppercase; font-size: 0.8rem;">
+                            Dettagli</h4>
+                        <div class="info-row">
+                            <span class="label">Stato</span>
+                            <span class="value"><span class="status-badge ready">Pronto</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Versione</span>
+                            <span class="value">v3</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Assegnato</span>
+                            <span class="value">M. Bianchi</span>
+                        </div>
+                    </div>
+
+                    <div class="comments-panel">
+                        <div class="comments-header">
+                            <h4>Commenti</h4>
+                            <span class="comment-count">3</span>
+                        </div>
+                        <div class="comments-list">
+                            <div class="comment">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div style="font-weight: 700;">Marco Bianchi</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-muted);">3gg fa</div>
+                                </div>
+                                <div class="comment-text">
+                                    Spaziatura pilastri C3-C4 non chiara. Confermare prima del getto.
+                                </div>
+                            </div>
+                            <div class="comment">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div style="font-weight: 700; color: var(--primary);">G. Russo (Arch)</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-muted);">2gg fa</div>
+                                </div>
+                                <div class="comment-text">
+                                    Confermo 4.5m. Vedi V3 caricata ora.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-comment">
+                            <textarea placeholder="Scrivi un commento..."></textarea>
+                            <button>Pubblica</button>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-success">✓ Segna Eseguito</button>
+                        <button class="btn btn-primary">↻ Nuova Versione</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchView(viewName) {
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(viewName).classList.add('active');
+            document.querySelector(`[data-view="${viewName}"]`)?.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchView(link.getAttribute('data-view'));
+            });
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
