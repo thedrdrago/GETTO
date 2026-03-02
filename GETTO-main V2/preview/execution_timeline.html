@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JETTO Execution Timeline</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --bg-card: #1c1e2d;
+            --bg-card-hover: #25283d;
+            --accent: #ff4518;
+            --accent-dim: #d6300a;
+            --success: #10b981;
+            --text-white: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: #2d3045;
+            --font-stack: 'Inter', -apple-system, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: var(--font-stack);
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        header {
+            max-width: 1400px;
+            margin: 0 auto 3rem auto;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 .highlight {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .progress-tracker {
+            text-align: right;
+        }
+
+        .progress-stat {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .progress-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .week-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .week-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+            background: var(--bg-card-hover);
+        }
+
+        .week-card.week-passed {
+            opacity: 0.7;
+        }
+
+        .week-card.all-done {
+            border-color: var(--success);
+        }
+
+        .week-card.all-done::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--success);
+        }
+
+        .week-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .week-badge {
+            display: inline-block;
+            background: var(--border-color);
+            color: var(--text-white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .week-card.today .week-badge {
+            background: var(--accent);
+        }
+
+        .week-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .week-focus {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .kpi-list {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .kpi-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .kpi-item:hover .custom-checkbox {
+            border-color: var(--accent);
+        }
+
+        .kpi-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-checkbox {
+            min-width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-top: 3px;
+        }
+
+        .kpi-item input:checked+.custom-checkbox {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .custom-checkbox::after {
+            content: "✓";
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .kpi-item input:checked+.custom-checkbox::after {
+            display: block;
+        }
+
+        .kpi-text {
+            font-size: 0.95rem;
+            color: var(--text-white);
+            transition: color 0.2s;
+        }
+
+        .kpi-item input:checked~.kpi-text {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .pass-condition {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .pass-condition strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        /* Reset Logic */
+        .settings-area {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--border-color);
+        }
+
+        .reset-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 1rem;
+        }
+
+        .reset-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <h1>Pre-Dev <span class="highlight">Execution</span></h1>
+            <p class="subtitle">12-Week Sprint / Feb 1 — May 1</p>
+        </div>
+        <div class="progress-tracker">
+            <div class="progress-stat" id="totalProgress">0%</div>
+            <div class="progress-label">Completion</div>
+        </div>
+    </header>
+
+    <div class="timeline-grid" id="timelineContainer">
+        <!-- Cards will be injected here -->
+    </div>
+
+    <div class="settings-area">
+        <p>Data is saved locally in your browser.</p>
+        <button class="reset-btn" id="resetBtn">Reset All Progress</button>
+    </div>
+
+    <script>
+        const timelineData = [
+            {
+                id: 1,
+                dates: "Feb 1–7",
+                title: "Market Research Preparation",
+                focus: "Be ready to extract hard signals in Sicily.",
+                kpis: [
+                    "Interview framework ready for all target roles",
+                    "Every interview question maps to metrics (freq, cost, resp)",
+                    "Clear definition of strong vs weak signals",
+                    "Zero MVP, zero UI, zero solution bias"
+                ],
+                condition: "You could run interviews without improvising a single question."
+            },
+            {
+                id: 2,
+                dates: "Feb 8–14",
+                title: "On-Site Market Research (Sicily)",
+                focus: "Reality check, not validation.",
+                kpis: [
+                    "≥ 10 interviews completed",
+                    "≥ 3 distinct roles represented",
+                    "Clear recurring patterns across interviews",
+                    "At least one quantified repeated failure mode",
+                    "Identified: who causes, who suffers, who pays"
+                ],
+                condition: "You can clearly say whether this is systemic or situational."
+            },
+            {
+                id: 3,
+                dates: "Feb 15–21",
+                title: "MVP Scope Definition",
+                focus: "Translate pain → minimum executable product.",
+                kpis: [
+                    "One primary workflow selected (only one)",
+                    "MVP scope frozen (what’s in / what’s out)",
+                    "≤ 5 core actions in MVP",
+                    "Clear dominant user role for v1",
+                    "At least 10 ideas explicitly killed"
+                ],
+                condition: "MVP directly replaces a specific WhatsApp behavior."
+            },
+            {
+                id: 4,
+                dates: "Feb 22–28",
+                title: "Product Structure & Website",
+                focus: "Structure before visuals.",
+                kpis: [
+                    "Clear product structure (pages, roles, permissions)",
+                    "Website structure defined (no polish)",
+                    "Value proposition crystal-clear in 1 sentence",
+                    "No marketing language, only operational language"
+                ],
+                condition: "A user can tell what the product does in 10 seconds."
+            },
+            {
+                id: 5,
+                dates: "Mar 1–7",
+                title: "Figma – Low Fidelity",
+                focus: "Logic, not beauty.",
+                kpis: [
+                    "Clickable low-fi Figma flow",
+                    "End-to-end workflow represented",
+                    "No edge cases, no secondary features",
+                    "Flow works without explanation"
+                ],
+                condition: "Users understand the product without you narrating."
+            },
+            {
+                id: 6,
+                dates: "Mar 8–14",
+                title: "Market Testing",
+                focus: "Stress-test the idea with people who matter.",
+                kpis: [
+                    "Prototype shown to industry professionals",
+                    "Honest friction points documented",
+                    "At least one 'this would’ve saved me' reaction",
+                    "Clear list of what confuses or slows users"
+                ],
+                condition: "Feedback is specific and corrective, not polite."
+            },
+            {
+                id: 7,
+                dates: "Mar 15–21",
+                title: "Adoption & Willingness Signals",
+                focus: "Commitment, not enthusiasm.",
+                kpis: [
+                    "Signals of who would adopt first vs resist",
+                    "At least 2 people willing to test on real project",
+                    "Clear blockers identified (cultural, tech, authority)"
+                ],
+                condition: "You clarify who pulls this into a project and who kills it."
+            },
+            {
+                id: 8,
+                dates: "Mar 22–28",
+                title: "Technical Reality Check",
+                focus: "Prevent over-engineering.",
+                kpis: [
+                    "MVP confirmed buildable by 1–2 devs",
+                    "No real-time, no heavy integrations required",
+                    "Clear list of what will be manual/hacked in v1",
+                    "Tech complexity aligned with MVP ambition"
+                ],
+                condition: "Nothing in MVP requires 'enterprise-grade' infrastructure."
+            },
+            {
+                id: 9,
+                dates: "Mar 29–Apr 4",
+                title: "Pre-Pilot Validation",
+                focus: "Seriousness test.",
+                kpis: [
+                    "At least 1 concrete pilot opportunity identified",
+                    "Clear understanding of onboarding friction",
+                    "Defined success criteria for a pilot",
+                    "No dependency on 'perfect product'"
+                ],
+                condition: "Someone is willing to change how they work, not just talk."
+            },
+            {
+                id: 10,
+                dates: "Apr 5–11",
+                title: "MVP Freeze",
+                focus: "Lock or die.",
+                kpis: [
+                    "MVP scope frozen",
+                    "User roles frozen",
+                    "Success metrics defined",
+                    "No feature creep allowed beyond this point"
+                ],
+                condition: "You could hand this to a dev without debate."
+            },
+            {
+                id: 11,
+                dates: "Apr 12–18",
+                title: "Build Strategy & Cost Reality",
+                focus: "Know what you’re committing to.",
+                kpis: [
+                    "Clear dev hiring strategy (who, how, when)",
+                    "Budget ceiling defined",
+                    "Kill criteria defined if build underperforms"
+                ],
+                condition: "You know exactly how much money you’re about to risk."
+            },
+            {
+                id: 12,
+                dates: "Apr 19–May 1",
+                title: "GO / NO-GO",
+                focus: "Adult decision.",
+                kpis: [
+                    "Decision based on evidence, not attachment",
+                    "Clear justification for: Go, Narrow, or Kill"
+                ],
+                condition: "You have clear evidence for the final decision."
+            }
+        ];
+
+        const container = document.getElementById('timelineContainer');
+        const totalProgressEl = document.getElementById('totalProgress');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Load state from local storage or empty object
+        let appState = JSON.parse(localStorage.getItem('jetto_timeline_state')) || {};
+
+        function render() {
+            container.innerHTML = '';
+            let totalTasks = 0;
+            let completedTasks = 0;
+
+            const now = new Date();
+            // Simple date check could be added here to highlight current week, 
+            // but for now we rely on user interaction.
+
+            timelineData.forEach(week => {
+                const weekState = appState[week.id] || [];
+                const isAllDone = weekState.length === week.kpis.length && week.kpis.length > 0;
+
+                const card = document.createElement('div');
+                card.className = `week-card ${isAllDone ? 'all-done' : ''}`;
+
+                let kpiHtml = '';
+                week.kpis.forEach((kpi, index) => {
+                    totalTasks++;
+                    const isChecked = weekState.includes(index);
+                    if (isChecked) completedTasks++;
+
+                    kpiHtml += `
+                        <label class="kpi-item">
+                            <input type="checkbox" 
+                                   data-week="${week.id}" 
+                                   data-index="${index}" 
+                                   ${isChecked ? 'checked' : ''}>
+                            <span class="custom-checkbox"></span>
+                            <span class="kpi-text">${kpi}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="week-header">
+                        <span class="week-badge">Week ${week.id} • ${week.dates}</span>
+                        <h3 class="week-title">${week.title}</h3>
+                        <p class="week-focus">${week.focus}</p>
+                    </div>
+                    <div class="kpi-list">
+                        ${kpiHtml}
+                    </div>
+                    <div class="pass-condition">
+                        <strong>Pass Condition</strong>
+                        ${week.condition}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            const percent = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+            totalProgressEl.textContent = `${percent}%`;
+        }
+
+        // Event Delegation for Checkboxes
+        container.addEventListener('change', (e) => {
+            if (e.target.type === 'checkbox') {
+                const weekId = e.target.getAttribute('data-week');
+                const kpiIndex = parseInt(e.target.getAttribute('data-index'));
+
+                if (!appState[weekId]) {
+                    appState[weekId] = [];
+                }
+
+                if (e.target.checked) {
+                    if (!appState[weekId].includes(kpiIndex)) {
+                        appState[weekId].push(kpiIndex);
+                    }
+                } else {
+                    appState[weekId] = appState[weekId].filter(i => i !== kpiIndex);
+                }
+
+                save();
+                render();
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all progress?')) {
+                appState = {};
+                save();
+                render();
+            }
+        });
+
+        function save() {
+            localStorage.setItem('jetto_timeline_state', JSON.stringify(appState));
+        }
+
+        // Initial Render
+        render();
+
+    </script>
+</body>
+
+</html>
